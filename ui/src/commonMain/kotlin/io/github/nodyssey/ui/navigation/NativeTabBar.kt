@@ -8,11 +8,16 @@ import androidx.compose.ui.unit.dp
 /**
  * The native bottom bar's half of the conversation, on iOS 26 and later.
  *
- * iOS 26 is the first release whose tab bar is real Liquid Glass, and that material only exists
- * inside a `UITabBarController` — a `UITabBar` on its own draws the new shape and then paints an
- * opaque background over it, and a bar drawn by Compose draws no material at all. Borrowing the
- * controller's bar costs a whole restructuring unless the bar can be told what to show and can say
- * what was tapped, and this is that seam.
+ * iOS 26 is the first release whose tab bar is real Liquid Glass. That material is drawn by the
+ * system: a native `UITabBar` gets it, and a bar drawn by Compose gets none. This is the seam that
+ * lets the app keep the navigation it already had while borrowing the bar — the bar is told what to
+ * show, and says what was tapped.
+ *
+ * (An earlier version of this comment claimed the material required a `UITabBarController`, and that
+ * a bare `UITabBar` painted an opaque background instead. That was a misreading of a bar left at its
+ * own intrinsic height, above the home indicator, instead of being sized to the bar plus the bottom
+ * safe area. It is recorded here because it is the shape of wrong answer that reads as authoritative
+ * and costs a day to unlearn.)
  *
  * Null everywhere else, and null is the ordinary state rather than a fallback: on Android, desktop
  * and iOS before 26, Compose draws the bar itself and none of this exists. Nothing here is a platform
